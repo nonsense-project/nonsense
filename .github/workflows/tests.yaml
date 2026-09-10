@@ -52,7 +52,7 @@ jobs:
         shell: bash
         run: |
           ./dist/nonsense-v2.3.0-${{ matrix.target }}/nonsensed${{ matrix.suffix }} --version
-          ./dist/nonsense-v2.3.0-${{ matrix.target }}/nonsensewallet${{ matrix.suffix }} --version
+          ./dist/nonsense-v2.3.0-${{ matrix.target }}/nonsensewallet${{ matrix.suffix }} version
           ./dist/nonsense-v2.3.0-${{ matrix.target }}/nonsensewallet${{ matrix.suffix }} --help
       - uses: actions/upload-artifact@v7.0.1
         with:

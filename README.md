@@ -141,7 +141,7 @@ sha256sum --check SHA256SUMS --ignore-missing
 tar -xzf nonsense-v2.3.0-linux-amd64.tar.gz
 cd nonsense-v2.3.0-linux-amd64
 ./nonsensed --version
-./nonsensewallet --version
+./nonsensewallet version
 ```
 
 Windows PowerShell:
@@ -151,7 +151,7 @@ Get-FileHash .\nonsense-v2.3.0-windows-amd64.zip -Algorithm SHA256
 Expand-Archive .\nonsense-v2.3.0-windows-amd64.zip -DestinationPath .
 Set-Location .\nonsense-v2.3.0-windows-amd64
 .\nonsensed.exe --version
-.\nonsensewallet.exe --version
+.\nonsensewallet.exe version
 ```
 
 On Windows, compare the displayed hash with the matching line in `SHA256SUMS`.
