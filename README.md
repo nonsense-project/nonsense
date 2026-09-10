@@ -120,7 +120,7 @@ The snapshot was checked against both project nodes at virtual DAA score **1,419
 | `nonsense:qr8jdslgp7k5jhcz2uq8fxnpdpr4hghth8kp32t693gmhtc2usvjgkj7su3c8` | 25,740 |
 | **Total premine** | **28,360** |
 
-Accepted mining payouts also included **0.00575724 NNN in transaction fees**, bringing gross rewards to 28,360.00575724 NNN. Fees are excluded from the premine total because they redistribute existing coins. Both servers currently mine to the same address; the rewards are counted once. Historical payouts and fees were reconstructed from accepted transactions, including spent outputs, so this is a mining total rather than a current wallet balance. See the [snapshot and calculation method](docs/premine-snapshot-2026-09-10.json).
+Accepted mining payouts also included **0.00575724 NNN in transaction fees**, bringing gross rewards to 28,360.00575724 NNN. Fees are excluded from the premine total because they redistribute existing coins. Both servers are configured with the same current mining address; the rewards are counted once. Historical payouts and fees were reconstructed from accepted transactions, including spent outputs, so this is a mining total rather than a current wallet balance. See the [snapshot and calculation method](docs/premine-snapshot-2026-09-10.json).
 
 The genesis transaction has no spendable outputs; the premine was accumulated through mining after genesis. The immutable genesis payload contains the historical text `no premine`, which must not be read as a claim that the founder did not mine coins after launching the daemon.
 
