@@ -298,6 +298,9 @@ func TestCheckPruningPointViolation(t *testing.T) {
 // of the type DifficultyManager for this test (defined below).
 func TestValidateDifficulty(t *testing.T) {
 	testutils.ForAllNets(t, true, func(t *testing.T, consensusConfig *consensus.Config) {
+		// Keep the mocked genesis DAA score outside the hard-fork reset interval
+		// so this test exercises the difficulty returned by the mock manager.
+		consensusConfig.HFDAAScore = consensusConfig.GenesisBlock.Header.DAAScore() + 1
 		factory := consensus.NewFactory()
 		mocDifficulty := &mocDifficultyManager{
 			genesisDaaScore: consensusConfig.GenesisBlock.Header.DAAScore(),

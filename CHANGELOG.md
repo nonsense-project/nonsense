@@ -10,6 +10,8 @@ Initial public Nonsense source publication from the deployed node snapshot.
 - Full node and CLI wallet for Linux x64 and Windows x64.
 - Module imports and project links point to `nonsense-project/nonsense`.
 - English specifications, node and wallet instructions, and release build scripts.
+- Updated inherited difficulty and DAG-window test fixtures for Nonsense genesis
+  parameters and isolated the mock difficulty test from activation reset rules.
 - Corrected stale port descriptions and removed a redundant boolean term
   reported by Go vet, without changing the expression's behavior.
 

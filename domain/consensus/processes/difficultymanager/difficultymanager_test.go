@@ -14,7 +14,6 @@ import (
 	"github.com/nonsense-project/nonsense/v2/domain/consensus/model"
 	"github.com/nonsense-project/nonsense/v2/domain/consensus/model/externalapi"
 	"github.com/nonsense-project/nonsense/v2/domain/consensus/utils/testutils"
-	"github.com/nonsense-project/nonsense/v2/domain/dagconfig"
 )
 
 func TestDifficulty(t *testing.T) {
@@ -127,15 +126,9 @@ func TestDifficulty(t *testing.T) {
 				"block rate, so the difficulty should increase as well")
 		}
 
-		var expectedBits uint32
-		switch consensusConfig.Name {
-		case dagconfig.TestnetParams.Name:
-			expectedBits = uint32(0x1e7f1441)
-		case dagconfig.DevnetParams.Name:
-			expectedBits = uint32(0x1f4e54ab)
-		case dagconfig.MainnetParams.Name:
-			expectedBits = uint32(0x1e7f1441)
-		}
+		// Nonsense networks share genesis bits 0x207fffff. This retarget
+		// fixture therefore has the same expected value on each network.
+		const expectedBits uint32 = 0x207f1441
 
 		if tip.Header.Bits() != expectedBits {
 			t.Errorf("tip.bits was expected to be %x but got %x", expectedBits, tip.Header.Bits())
