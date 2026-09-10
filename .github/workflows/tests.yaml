@@ -1,0 +1,64 @@
+name: Tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-go@v7.0.0
+        with:
+          go-version: '1.26.8'
+          cache: true
+      - run: go mod verify
+      - name: Test source packages
+        env:
+          GOMAXPROCS: '2'
+        run: go test -short -p 1 -parallel 1 -timeout 30m ./...
+  binaries:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            target: linux-amd64
+            suffix: ''
+          - os: windows-2025
+            target: windows-amd64
+            suffix: '.exe'
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-go@v7.0.0
+        with:
+          go-version: '1.26.8'
+          cache: true
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.13'
+      - name: Build node and CLI wallet
+        run: python scripts/build_release.py --target ${{ matrix.target }} --version v2.3.0
+      - name: Verify console executables
+        shell: bash
+        run: |
+          ./dist/nonsense-v2.3.0-${{ matrix.target }}/nonsensed${{ matrix.suffix }} --version
+          ./dist/nonsense-v2.3.0-${{ matrix.target }}/nonsensewallet${{ matrix.suffix }} --version
+          ./dist/nonsense-v2.3.0-${{ matrix.target }}/nonsensewallet${{ matrix.suffix }} --help
+      - uses: actions/upload-artifact@v7.0.1
+        with:
+          name: nonsense-${{ matrix.target }}
+          if-no-files-found: error
+          path: |
+            dist/*.tar.gz
+            dist/*.zip
+            dist/*.sha256

@@ -1,0 +1,14 @@
+services:
+  nonsensed:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    restart: unless-stopped
+    ports:
+      - '39111:39111/tcp'
+      - '127.0.0.1:39110:39110/tcp'
+    volumes:
+      - nonsense-data:/app/data
+    command: ['./nonsensed', '--utxoindex', '--appdir=/app/data']
+volumes:
+  nonsense-data:

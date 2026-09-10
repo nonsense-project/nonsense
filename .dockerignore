@@ -1,0 +1,8 @@
+.git/
+dist/
+bin/
+*.log
+.env*
+keys.json
+.nonsensed/
+.nonsensewallet/
