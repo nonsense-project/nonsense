@@ -46,7 +46,7 @@ The values below describe the mainnet configuration shipped in this repository. 
 | Genesis timestamp | **2026-08-30 00:00:00 UTC** |
 | Genesis allocation | **No spendable genesis outputs** |
 | Founder premine | **Yes — early block rewards mined after daemon startup** |
-| Premine amount | **Not yet disclosed** |
+| Premine amount | **28,360 NNN** as of 2026-09-10 20:33:50 UTC; see [snapshot](docs/premine-snapshot-2026-09-10.json) |
 | Mainnet address prefix | `nonsense:` |
 | Mainnet P2P / node RPC | TCP **39111** / **39110** |
 | Local wallet daemon | **localhost:9182** by default |
@@ -109,7 +109,18 @@ The schedule-accounting bound checked by the source tests is **1,999,999,998.676
 
 ### Premine disclosure
 
-**Nonsense has a founder premine.** The founder mined NNN after starting the daemon, accumulating early block rewards. These rewards are part of the normal emission schedule. **The exact premine amount has not yet been disclosed.**
+**Nonsense has a founder premine.** The founder mined NNN after starting the daemon, accumulating early block rewards. These rewards are part of the normal emission schedule. **The verified premine is 28,360 NNN as of 2026-09-10 at 20:33:50 UTC**, equal to 0.001418% of the 2 billion NNN maximum supply. Mining continues, so this is a dated snapshot.
+
+The snapshot was checked against both project nodes at virtual DAA score **1,419**, with **1,420** known blocks and tip `9a1727c536a04107d62ff703f7f859d4222824a46d2d6746604f4ff6becfca00`.
+
+| Mining address | Minted subsidy, NNN |
+|---|---:|
+| `nonsense:qrffhjdzevvrv5q2e8gsezam62lc6c80nnwp4zszrk2uqxl2qetksump62mfd` | 180 |
+| `nonsense:qp38nfnxn3525fktd8ypscdcjsk22tdc63dza2we0xpv6gnlsu7ejj2fvf03z` | 2,440 |
+| `nonsense:qr8jdslgp7k5jhcz2uq8fxnpdpr4hghth8kp32t693gmhtc2usvjgkj7su3c8` | 25,740 |
+| **Total premine** | **28,360** |
+
+Accepted mining payouts also included **0.00575724 NNN in transaction fees**, bringing gross rewards to 28,360.00575724 NNN. Fees are excluded from the premine total because they redistribute existing coins. Both servers currently mine to the same address; the rewards are counted once. Historical payouts and fees were reconstructed from accepted transactions, including spent outputs, so this is a mining total rather than a current wallet balance. See the [snapshot and calculation method](docs/premine-snapshot-2026-09-10.json).
 
 The genesis transaction has no spendable outputs; the premine was accumulated through mining after genesis. The immutable genesis payload contains the historical text `no premine`, which must not be read as a claim that the founder did not mine coins after launching the daemon.
 

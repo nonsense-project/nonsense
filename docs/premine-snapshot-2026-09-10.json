@@ -1,0 +1,50 @@
+{
+  "captured_at": "2026-09-10T20:33:50Z",
+  "tip": "9a1727c536a04107d62ff703f7f859d4222824a46d2d6746604f4ff6becfca00",
+  "virtual_daa_score": "1419",
+  "block_count": "1420",
+  "premine_nnn": "28360.00000000",
+  "fee_nnn": "0.00575724",
+  "gross_nnn": "28360.00575724",
+  "addresses": [
+    {
+      "address": "nonsense:qp38nfnxn3525fktd8ypscdcjsk22tdc63dza2we0xpv6gnlsu7ejj2fvf03z",
+      "subsidy_nnn": "2440.00000000",
+      "fee_nnn": "0.00040026",
+      "reward_outputs": 122,
+      "server_miner_log_example_block": "6aca8fd650a294b2a3dac52b478755d9d37331404ee85964ae0f3399e6d34078"
+    },
+    {
+      "address": "nonsense:qr8jdslgp7k5jhcz2uq8fxnpdpr4hghth8kp32t693gmhtc2usvjgkj7su3c8",
+      "subsidy_nnn": "25740.00000000",
+      "fee_nnn": "0.00535698",
+      "reward_outputs": 1287,
+      "server_miner_log_example_block": "8a45259195bfc445f033bc349dfac3cfd855371caa295056c1d52cc6be67bc63"
+    },
+    {
+      "address": "nonsense:qrffhjdzevvrv5q2e8gsezam62lc6c80nnwp4zszrk2uqxl2qetksump62mfd",
+      "subsidy_nnn": "180.00000000",
+      "fee_nnn": "0.00000000",
+      "reward_outputs": 9,
+      "server_miner_log_example_block": "591093b3142566dfd6d0b138eec7e6a725408f2d90217157f360c8919b14c923"
+    }
+  ],
+  "network": "nonsense-mainnet",
+  "verified_nodes": [
+    "145.63.129.88",
+    "188.137.235.121"
+  ],
+  "current_shared_mining_address": "nonsense:qr8jdslgp7k5jhcz2uq8fxnpdpr4hghth8kp32t693gmhtc2usvjgkj7su3c8",
+  "maximum_supply_nnn": "2000000000.00000000",
+  "share_of_maximum_supply_percent": "0.001418",
+  "methodology": [
+    "Retrieved all 1420 known blocks from genesis through the recorded tip.",
+    "Deduplicated transactions by transaction ID and selected accepted transactions using the selected-parent-chain RPC.",
+    "Included the recorded virtual tip coinbase only after confirming its outputs in the node UTXO index.",
+    "Matched all three mining payout addresses to blocks explicitly recorded as found in the server miner log.",
+    "Summed accepted mining reward outputs and subtracted transaction fees calculated from transaction inputs and outputs.",
+    "Verified minted subsidies equal 1418 reward outputs at 20 NNN each and match circulating supply reported by both nodes.",
+    "Both servers use the same current mining address; their views of the same rewards are counted once."
+  ],
+  "ongoing_mining": true
+}
