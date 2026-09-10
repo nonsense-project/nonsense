@@ -20,9 +20,9 @@
 
 **Nonsense (NNN)** is an independent proof-of-work cryptocurrency built on a GHOSTDAG blockDAG. It is a fork of Karlsen, with its own genesis block, network identifiers, address prefixes, proof-of-work seed, and monetary parameters. Karlsen itself descends from Kaspa.
 
-This repository contains the Go full node, `nonsensed`, and the command-line wallet, `nonsensewallet`, together with the consensus implementation, RPC interfaces, tests, and development tools. Published binary releases contain the **node and CLI wallet for Linux x64 and Windows x64**. GUI wallet downloads for Windows, Linux, and macOS are available from [Altbase Wallet](https://github.com/AltbaseWallet/AltbaseWallet/releases/latest).
+This repository contains the Go full node, `nonsensed`, and the command-line wallet, `nonsensewallet`, together with the consensus implementation, RPC interfaces, tests, and development tools. Published binary releases contain the **node and CLI wallet for Linux x64 and Windows x64**, plus separate **CPU miner ZIPs** for both platforms. GUI wallet downloads for Windows, Linux, and macOS are available from [Altbase Wallet](https://github.com/AltbaseWallet/AltbaseWallet/releases/latest).
 
-[Specifications](#specifications) · [Emission](#emission) · [Proof of work](#proof-of-work) · [Run a node](#run-a-node) · [Use the wallet](#use-the-wallet) · [Build](#build-from-source) · [Architecture](#source-layout)
+[Specifications](#specifications) · [Emission](#emission) · [Proof of work](#proof-of-work) · [Run a node](#run-a-node) · [Use the wallet](#use-the-wallet) · [Mining](#mining-with-the-cpu-miner) · [Build](#build-from-source) · [Architecture](#source-layout)
 
 ## Specifications
 
@@ -138,7 +138,7 @@ Nonsense uses this independent 32-byte seed:
 
 The full dataset contains 37,748,717 items of 128 bytes: **4,831,835,776 bytes, approximately 4.50 GiB**, before other miner memory allocations. Node validation uses a light cache rather than the full mining dataset. Its raw cache payload is approximately 72 MiB, with additional runtime overhead.
 
-Mining software must support Nonsense's seed, header format, and algorithm. Generic Karlsen or FishHash support alone does not establish compatibility. Development miner sources are available under `cmd/nonsenseminer`; miner executables are not included in the binary releases.
+Mining software must support Nonsense's seed, header format, and algorithm. Generic Karlsen or FishHash support alone does not establish compatibility. The standalone CPU miner is available in separate Linux x64 and Windows x64 ZIPs in the release. Its sources are under `cmd/nonsenseminer`; see [Mining](#mining-with-the-cpu-miner) for setup.
 
 Sources: [PoW pipeline](domain/consensus/utils/pow/pow.go), [FishHash parameters](domain/consensus/utils/pow/fishhash.go), [FishHashPlus kernel](domain/consensus/utils/pow/fishhashplus_kernel.go).
 
@@ -150,8 +150,10 @@ Open the [latest release](https://github.com/nonsense-project/nonsense/releases/
 |---|---|
 | `nonsense-v2.3.0-linux-amd64.tar.gz` | `nonsensed`, `nonsensewallet` |
 | `nonsense-v2.3.0-windows-amd64.zip` | `nonsensed.exe`, `nonsensewallet.exe` |
+| [nonsenseminer-v2.3.0-linux-amd64.zip](https://github.com/nonsense-project/nonsense/releases/download/v2.3.0/nonsenseminer-v2.3.0-linux-amd64.zip) | `nonsenseminer` only |
+| [nonsenseminer-v2.3.0-windows-amd64.zip](https://github.com/nonsense-project/nonsense/releases/download/v2.3.0/nonsenseminer-v2.3.0-windows-amd64.zip) | `nonsenseminer.exe` only |
 
-Archives also include the ISC license. `SHA256SUMS` contains the archive checksums. No miner, genesis generator, explorer, GUI wallet, or separate RPC command utility is bundled.
+Node and CLI wallet archives also include the ISC license. Each miner ZIP contains only its executable; the [ISC license](LICENSE) also applies to the miner. `SHA256SUMS` covers all four archives. No genesis generator, explorer, GUI wallet, or separate RPC command utility is bundled.
 
 Linux:
 
@@ -185,7 +187,7 @@ Download the latest **Altbase Wallet** release for a desktop GUI:
 | Linux | [Latest Altbase Wallet release](https://github.com/AltbaseWallet/AltbaseWallet/releases/latest) |
 | macOS | [Latest Altbase Wallet release](https://github.com/AltbaseWallet/AltbaseWallet/releases/latest) |
 
-Choose the installer or archive for your operating system on the Altbase release page. Nonsense's own release archives contain `nonsensed` and `nonsensewallet` (the node and CLI wallet).
+Choose the installer or archive for your operating system on the Altbase release page. Nonsense's node/CLI wallet archives contain `nonsensed` and `nonsensewallet`. The standalone CPU miner is supplied in separate ZIPs.
 
 ## Run a node
 
@@ -275,6 +277,47 @@ Current single-signer wallets derive from `m/44'/121337'/0'`; multisignature wal
 
 Address prefixes and network identifiers differ from the upstream networks. Use Nonsense-compatible wallet software and the correct network when restoring keys.
 
+## Mining with the CPU miner
+
+Download the miner ZIP for your platform from [v2.3.0](https://github.com/nonsense-project/nonsense/releases/tag/v2.3.0). Each miner ZIP contains only `nonsenseminer` or `nonsenseminer.exe`; the node and CLI wallet are separate downloads. This is a **CPU miner** for NonsenseHashV2 / FishHashPlus, not a GPU miner.
+
+### 1. Prepare your node and receiving address
+
+Follow [Run a node](https://github.com/nonsense-project/nonsense#run-a-node) and [Use the wallet](https://github.com/nonsense-project/nonsense#use-the-wallet). Keep `nonsensed` running, wait for it to synchronize, and keep its RPC bound to `127.0.0.1:39110`. If the node is already running, use that instance.
+
+With the wallet daemon running, obtain an address using `./nonsensewallet new-address` on Linux or `.\nonsensewallet.exe new-address` in Windows PowerShell. You can also use an existing receiving address you control. Replace the entire `nonsense:YOUR_RECEIVING_ADDRESS` placeholder below with your complete address, including the `nonsense:` prefix.
+
+### 2. Linux x64
+
+Download `nonsenseminer-v2.3.0-linux-amd64.zip` and `SHA256SUMS` into the same directory, then run:
+
+```bash
+sha256sum --check SHA256SUMS --ignore-missing
+unzip nonsenseminer-v2.3.0-linux-amd64.zip -d nonsenseminer-v2.3.0-linux-amd64
+cd nonsenseminer-v2.3.0-linux-amd64
+chmod +x nonsenseminer
+./nonsenseminer --rpcserver=127.0.0.1:39110 --miningaddr=nonsense:YOUR_RECEIVING_ADDRESS --light-dataset
+```
+
+### 3. Windows x64 (PowerShell)
+
+Download `nonsenseminer-v2.3.0-windows-amd64.zip` and `SHA256SUMS`. Compare the hash below with the miner's matching line in `SHA256SUMS` before extracting:
+
+```powershell
+Get-FileHash .\nonsenseminer-v2.3.0-windows-amd64.zip -Algorithm SHA256
+Expand-Archive .\nonsenseminer-v2.3.0-windows-amd64.zip -DestinationPath .\nonsenseminer-v2.3.0-windows-amd64
+Set-Location .\nonsenseminer-v2.3.0-windows-amd64
+.\nonsenseminer.exe --rpcserver=127.0.0.1:39110 --miningaddr=nonsense:YOUR_RECEIVING_ADDRESS --light-dataset
+```
+
+### 4. Memory mode, progress, and stopping
+
+- `--light-dataset` uses less memory but hashes more slowly. Omit it to build the full dataset, which needs approximately **4.50 GiB plus runtime overhead**. Allow initialization to finish.
+- Leave the miner and node running. Mining continues until you press **Ctrl+C**; no block-count limit is set in these commands.
+- `Found block` and `Submitting block` messages report a solution and its submission. Check subsequent messages for rejection or connection errors. If the miner reports that the node is not synced, let the node synchronize.
+- Inspect your address in the [explorer](https://explorer.nonsense.rodeo/) or check `nonsensewallet balance`. Newly mined rewards must mature before they can be spent.
+- Use `./nonsenseminer --help` on Linux or `.\nonsenseminer.exe --help` on Windows for all options.
+
 ## Networks and genesis
 
 | Network | CLI selection | P2P | Node RPC | Address prefix |
@@ -312,6 +355,7 @@ go mod verify
 mkdir -p bin
 go build -trimpath -o bin/nonsensed .
 go build -trimpath -o bin/nonsensewallet ./cmd/nonsensewallet
+go build -trimpath -o bin/nonsenseminer ./cmd/nonsenseminer
 ```
 
 For both release targets on Debian/Ubuntu:
@@ -348,7 +392,7 @@ The repository also includes longer consensus and stability scenarios. The full 
 | `infrastructure/` | Configuration, storage, networking, logging |
 | `cmd/nonsensewallet/` | CLI wallet, wallet daemon, key handling, signing |
 | `cmd/nonsensectl/` | Source for the RPC command-line utility |
-| `cmd/nonsenseminer/` | Development miner sources |
+| `cmd/nonsenseminer/` | Standalone CPU miner sources |
 | `util/` | Addresses, amounts, transaction mass, supporting utilities |
 | `stability-tests/` | Multi-node and consensus scenarios |
 | `scripts/` | Release packaging |
