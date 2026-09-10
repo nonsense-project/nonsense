@@ -12,13 +12,15 @@
 <p align="center">
   <a href="https://nonsense.rodeo">Website</a> ·
   <a href="https://explorer.nonsense.rodeo">Block explorer</a> ·
-  <a href="https://github.com/nonsense-project/nonsense/releases/latest">Downloads</a> ·
+  <a href="https://github.com/nonsense-project/nonsense/releases/latest">CLI downloads</a> ·
+  <a href="https://github.com/AltbaseWallet/AltbaseWallet/releases/latest">GUI downloads</a> ·
+  <a href="https://discord.gg/YkF8DqkfM7">Discord</a> ·
   <a href="https://github.com/nonsense-project/nonsense/issues">Issues</a>
 </p>
 
 **Nonsense (NNN)** is an independent proof-of-work cryptocurrency built on a GHOSTDAG blockDAG. It is a fork of Karlsen, with its own genesis block, network identifiers, address prefixes, proof-of-work seed, and monetary parameters. Karlsen itself descends from Kaspa.
 
-This repository contains the Go full node, `nonsensed`, and the command-line wallet, `nonsensewallet`, together with the consensus implementation, RPC interfaces, tests, and development tools. Published binary releases contain the **node and CLI wallet for Linux x64 and Windows x64**. There is no GUI wallet in these releases.
+This repository contains the Go full node, `nonsensed`, and the command-line wallet, `nonsensewallet`, together with the consensus implementation, RPC interfaces, tests, and development tools. Published binary releases contain the **node and CLI wallet for Linux x64 and Windows x64**. GUI wallet downloads for Windows, Linux, and macOS are available from [Altbase Wallet](https://github.com/AltbaseWallet/AltbaseWallet/releases/latest).
 
 [Specifications](#specifications) · [Emission](#emission) · [Proof of work](#proof-of-work) · [Run a node](#run-a-node) · [Use the wallet](#use-the-wallet) · [Build](#build-from-source) · [Architecture](#source-layout)
 
@@ -43,6 +45,8 @@ The values below describe the mainnet configuration shipped in this repository. 
 | Coinbase maturity | **100** consensus maturity units; approximately 100 target block intervals |
 | Genesis timestamp | **2026-08-30 00:00:00 UTC** |
 | Genesis allocation | **No spendable genesis outputs** |
+| Founder premine | **Yes — early block rewards mined after daemon startup** |
+| Premine amount | **Not yet disclosed** |
 | Mainnet address prefix | `nonsense:` |
 | Mainnet P2P / node RPC | TCP **39111** / **39110** |
 | Local wallet daemon | **localhost:9182** by default |
@@ -103,7 +107,11 @@ At the one-second target rate, the initial phase spans about 179.625 days and th
 
 The schedule-accounting bound checked by the source tests is **1,999,999,998.67608000 NNN**, below the maximum supply parameter. It is not a measurement of circulating supply: genesis handling and DAG reward eligibility matter, and actual circulation is derived from the accepted UTXO set. A coinbase can aggregate rewards for eligible merge-set blocks, so its total output need not equal one base subsidy.
 
-The genesis transaction has no spendable outputs. Its payload states `Nonsense mainnet genesis 2026-08-30 | supply 2000000000 NNN | no premine`.
+### Premine disclosure
+
+**Nonsense has a founder premine.** The founder mined NNN after starting the daemon, accumulating early block rewards. These rewards are part of the normal emission schedule. **The exact premine amount has not yet been disclosed.**
+
+The genesis transaction has no spendable outputs; the premine was accumulated through mining after genesis. The immutable genesis payload contains the historical text `no premine`, which must not be read as a claim that the founder did not mine coins after launching the daemon.
 
 Sources: [subsidy schedule](domain/consensus/processes/coinbasemanager/coinbasemanager.go), [supply-bound test](domain/consensus/processes/coinbasemanager/coinbasemanager_test.go), [genesis definition](domain/dagconfig/genesis.go).
 
@@ -155,6 +163,18 @@ Set-Location .\nonsense-v2.3.0-windows-amd64
 ```
 
 On Windows, compare the displayed hash with the matching line in `SHA256SUMS`.
+
+### GUI wallet downloads
+
+Download the latest **Altbase Wallet** release for a desktop GUI:
+
+| Platform | GUI wallet download |
+|---|---|
+| Windows | [Latest Altbase Wallet release](https://github.com/AltbaseWallet/AltbaseWallet/releases/latest) |
+| Linux | [Latest Altbase Wallet release](https://github.com/AltbaseWallet/AltbaseWallet/releases/latest) |
+| macOS | [Latest Altbase Wallet release](https://github.com/AltbaseWallet/AltbaseWallet/releases/latest) |
+
+Choose the installer or archive for your operating system on the Altbase release page. Nonsense's own release archives contain `nonsensed` and `nonsensewallet` (the node and CLI wallet).
 
 ## Run a node
 
